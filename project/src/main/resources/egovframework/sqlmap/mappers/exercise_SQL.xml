@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="exerciseDAO">
+	<resultMap type="exercise" id="exerciseResult">
+		<id property="excr_id" column="EXCR_ID" />
+		<result property="wght" column="WGHT" />
+		<result property="cal" column="CAL" />
+		<result property="excr_tm" column="EXCR_TM" />
+		<result property="prvt" column="PRVT" />
+		<result property="reg_dt" column="REG_DT" />
+		<result property="mdfcn_dt" column="MDFCN_DT" />
+		<result property="ttl" column="TTL" />
+		<result property="inq_cnt" column="INQ_CNT" />
+
+		<association property="reg_user" column="USER_NM"
+			javaType="User">
+			<id property="id" column="ID" />
+			<result property="user_nm" column="USER_NM" />
+			<result property="nick_nm" column="NICK_NM" />
+			<result property="user_id" column="USER_ID" />
+			<result property="user_pswd" column="USER_PSWD" />
+			<result property="sexdstn" column="SEXDSTN" />
+			<result property="eml" column="EML" />
+			<result property="mbr_grd" column="MBR_GRD" />
+		</association>
+
+		<association property="mdfcn_user" column="USER_NM"
+			javaType="User">
+			<id property="id" column="ID" />
+			<result property="user_nm" column="USER_NM" />
+			<result property="nick_nm" column="NICK_NM" />
+			<result property="user_id" column="USER_ID" />
+			<result property="user_pswd" column="USER_PSWD" />
+			<result property="sexdstn" column="SEXDSTN" />
+			<result property="eml" column="EML" />
+			<result property="mbr_grd" column="MBR_GRD" />
+		</association>
+
+		<association property="ctgry_e" column="CLSF_NM"
+			javaType="category_e">
+			<id property="e_ctgry_id" column="E_CTGRY_ID" />
+			<result property="clsf_nm" column="CLSF_NM" />
+		</association>
+	</resultMap>
+
+	<!-- //타회원 운동루틴 작성글 전체목록 검색 -->
+	<select id="OthersearchingInfo" parameterType="exercise"
+		resultMap="exerciseResult">
+		SELECT e.EXCR_ID, e.REG_DT, e.TTL,e.INQ_CNT,
+		c.CLSF_NM, us.NICK_NM
+		FROM
+		EXERCISE e
+		LEFT
+		OUTER JOIN CATEGORY_E c ON
+		e.CTGRY_E = c.E_CTGRY_ID
+		LEFT
+		OUTER JOIN
+		"USER" us ON e.REG_USER = us.ID
+		WHERE PRVT = 0 AND
+		NOT(e.REG_USER =
+		#{reg_user.id})
+		<if test="ttl != NULL">
+			AND e.TTL LIKE '%'||#{ttl}||'%'
+		</if>
+		ORDER BY EXCR_ID
+		DESC
+	</select>
+
+	<!-- //타회원 운동루틴 작성글 전체목록 검색 -->
+	<select id="otherUserSelectAllExerciseList"
+		parameterType="exercise" resultMap="exerciseResult">
+		SELECT e.EXCR_ID, e.REG_DT,
+		e.TTL,e.INQ_CNT,
+		c.CLSF_NM, us.NICK_NM
+		FROM
+		EXERCISE e
+		LEFT
+		OUTER JOIN
+		CATEGORY_E c ON
+		e.CTGRY_E = c.E_CTGRY_ID
+		LEFT OUTER JOIN
+		"USER" us ON
+		e.REG_USER = us.ID
+		WHERE PRVT = 0 AND NOT(e.REG_USER = #{reg_user.id})
+		ORDER BY EXCR_ID
+		DESC
+	</select>
+
+	<select id="selectAllExerciseList" resultMap="exerciseResult">
+		SELECT e.EXCR_ID,
+		e.REG_DT, e.TTL, c.CLSF_NM, us.NICK_NM,e.INQ_CNT
+		FROM
+		EXERCISE e
+		LEFT
+		OUTER JOIN
+		CATEGORY_E c ON e.CTGRY_E = c.E_CTGRY_ID
+		LEFT OUTER JOIN
+		"USER" us ON
+		e.REG_USER = us.ID
+		WHERE e.REG_USER = #{reg_user.id}
+		ORDER
+		BY
+		EXCR_ID
+		DESC
+	</select>
+
+	<select id="searchingInfo" resultMap="exerciseResult"
+		parameterType="exercise">
+		SELECT e.EXCR_ID, e.REG_DT, e.TTL,
+		c.CLSF_NM,
+		us.NICK_NM
+		FROM
+		EXERCISE e
+		LEFT
+		OUTER JOIN CATEGORY_E c ON
+		e.CTGRY_E = c.E_CTGRY_ID
+		LEFT OUTER JOIN
+		"USER" us ON e.REG_USER = us.ID
+		WHERE e.REG_USER =
+		#{e.reg_user.id}
+		ORDER BY EXCR_ID
+		DESC
+	</select>
+
+	<insert id="insertExercise" parameterType="exercise">
+		<![CDATA[
+		INSERT INTO
+		EXERCISE(EXCR_ID,REG_USER,MDFCN_USER,CTGRY_E, WGHT,
+		CAL,EXCR_TM,PRVT,REG_DT,MDFCN_DT,TTL) VALUES(
+		#{excr_id},
+		#{reg_user.id},
+		#{mdfcn_user.id},
+		#{ctgry_e.e_ctgry_id},
+		#{wght},
+		#{cal},
+		#{excr_tm},
+		#{prvt},
+		#{reg_dt},
+		#{mdfcn_dt},
+		#{ttl})
+	]]>
+	</insert>
+
+	<update id="updateExercise">
+		<![CDATA[
+		UPDATE EXERCISE
+		SET
+		CTGRY_E=#{ctgry_e.e_ctgry_id},
+		WGHT=#{wght},
+		CAL=#{cal},
+		EXCR_TM=#{excr_tm},
+		PRVT=#{prvt},
+		MDFCN_DT=#{mdfcn_dt},
+		TTL=#{ttl}
+		WHERE
+		EXCR_ID=#{excr_id}
+	]]>
+	</update>
+
+	<update id="updateExerInqcnt">
+		UPDATE EXERCISE
+		SET
+		INQ_CNT=INQ_CNT
+		+ 1
+		WHERE
+		EXCR_ID=#{excr_id}
+	</update>
+
+
+	<delete id="deleteExercise">
+		DELETE FROM EXERCISE
+		WHERE EXCR_ID=#{excr_id}
+	</delete>
+
+	<select id="selectExerciseID" resultMap="exerciseResult">
+		SELECT e.EXCR_ID,
+		e.REG_DT, e.TTL, e.WGHT, e.CAL, e.EXCR_TM,e.INQ_CNT,
+		e.PRVT,c.CLSF_NM,
+		us.NICK_NM
+		FROM
+		EXERCISE e
+		LEFT OUTER JOIN CATEGORY_E c ON e.CTGRY_E =
+		c.E_CTGRY_ID
+		LEFT OUTER JOIN "USER" us ON e.REG_USER = us.ID
+		WHERE
+		EXCR_ID=#{excr_id}
+
+
+	</select>
+
+
+	<select id="getDateList" resultMap="exerciseResult">
+		SELECT e.EXCR_ID,
+		e.REG_DT, e.TTL, c.CLSF_NM,
+		us.NICK_NM,e.INQ_CNT,e.CAL,e.EXCR_TM
+		FROM
+		EXERCISE e
+		LEFT
+		OUTER JOIN
+		CATEGORY_E c ON e.CTGRY_E = c.E_CTGRY_ID
+		LEFT OUTER JOIN
+		"USER" us ON
+		e.REG_USER = us.ID
+		WHERE e.REG_USER = #{reg_user.id} AND e.REG_DT
+		BETWEEN #{startdt} AND #{enddt}
+		ORDER
+		BY
+		EXCR_ID
+		DESC
+	</select>
+</mapper>

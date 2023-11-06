@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="egovframework.sample.service.impl.DataMapper">
+    
+    <resultMap type="data" id="dataResult">
+		<id property="id" column="ID" />
+		<result property="part" column="PART"/>
+		<result property="youtuber" column="YOUTUBER"/>
+		<result property="link" column="LINK"/>
+		<result property="framelink" column="FRAMELINK" />
+	</resultMap>
+	
+	
+    <insert id="insertData">
+        INSERT INTO DATA(ID,PART,YOUTUBER,LINK,FRAMELINK) 
+        VALUES (
+        #{id},
+        #{part},
+        #{youtuber},
+        #{link},
+        #{framelink}
+        )
+        
+    </insert>
+    
+    <update id="updateData">
+        UPDATE DATA 
+        SET PART=#{part},
+        	YOUTUBER=#{youtuber},
+        	LINK=#{link},
+        	FRAMELINK=#{framelink}
+        WHERE ID=#{id}
+    </update>
+    
+    <delete id="deleteData">
+		DELETE FROM DATA
+		WHERE ID=#{id}
+	</delete>
+	
+    <select id="selectData" resultMap="dataResult">
+	<![CDATA[
+		SELECT ID,PART,YOUTUBER,LINK,FRAMELINK
+		FROM DATA
+		WHERE ID=#{id, jdbcType=VARCHAR}
+		]]>
+	</select>
+	
+    <select id="getDataByPart" resultMap="dataResult">
+    	SELECT * FROM DATA WHERE PART = #{part}
+  	</select>
+  	
+
+    
+  
+</mapper>
+

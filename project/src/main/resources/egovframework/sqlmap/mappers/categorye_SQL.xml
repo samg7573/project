@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="category_EDAO">
+	<resultMap type="category_e" id="categoryResult">
+		<result property="e_ctgry_id" column="E_CTGRY_ID" />
+		<result property="clsf_nm" column="CLSF_NM" />
+	</resultMap>
+		<select id="selectAllCategory_EList" resultMap="categoryResult">
+		SELECT * FROM CATEGORY_E 
+		</select>
+</mapper>

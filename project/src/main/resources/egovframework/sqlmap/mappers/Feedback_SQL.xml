@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="egovframework.sample.service.impl.FeedbackMapper">
+	<resultMap id="feedbackresult"
+		type="egovframework.sample.service.FeedbackVO">
+		<result property="id" column="ID" />
+		<result property="ttl" column="TTL" />
+		<result property="bbs_cn" column="BBS_CN" />
+		<result property="rcmdtn_cnt" column="RCMDTN_CNT" />
+		<result property="reg_dt" column="REG_DT" />
+		<result property="mdfcn_dt" column="MDFCN_DT" />
+		<result property="reg_user" column="REG_USER" />
+		<result property="photo" column="PHOTO" />
+		<result property="mdfcn_user" column="MDFCN_USER" />
+		<result property="view_num" column="VIEW_NUM"/>
+		<!-- jdbcType="BLOB" javaType="java.sql.Blob" typeHandler="org.apache.ibatis.type.BlobTypeHandler" -->
+		
+	</resultMap>
+
+	<insert id="insertFeedback"
+		parameterType="egovframework.sample.service.FeedbackVO">
+	<![CDATA[
+		INSERT INTO FEEDBACK(ID, TTL, REG_USER, BBS_CN, PHOTO, REG_DT,RCMDTN_CNT ) VALUES(
+		#{id},
+		#{ttl},
+		#{reg_user},
+		#{bbs_cn},
+		#{photo},
+		SYSDATE,
+		0)
+		]]>
+		<!-- #{photo, jdbcType=BLOB}) -->
+	</insert>
+
+
+	<update id="updateFeedback">
+		UPDATE FEEDBACK
+		SET TTL=#{ttl},
+		MDFCN_USER=#{reg_user},
+		BBS_CN=#{bbs_cn},
+		MDFCN_DT=SYSDATE,
+		PHOTO =
+		#{photo}
+		WHERE ID=#{id}
+	</update>
+
+	<delete id="deleteFeedback">
+		DELETE FROM FEEDBACK
+		WHERE ID=#{id}
+	</delete>
+
+	<select id="selectFeedback" resultMap="feedbackresult">
+	<![CDATA[
+		SELECT ID, TTL, REG_USER, MDFCN_USER, BBS_CN, REG_DT, MDFCN_DT, PHOTO, RCMDTN_CNT, VIEW_NUM
+		FROM FEEDBACK
+		WHERE ID=#{id}
+		]]>
+	</select>
+
+	<select id="selectFeedbackList" resultMap="feedbackresult">
+		SELECT ID, TTL,
+		REG_USER, MDFCN_USER, BBS_CN, REG_DT, MDFCN_DT, PHOTO
+		FROM FEEDBACK
+		ORDER BY ID DESC
+	</select>
+	
+	<update id="updateRcmdtn">
+		UPDATE FEEDBACK
+		SET RCMDTN_CNT=#{rcmdtn_cnt}
+		WHERE
+		ID=#{id}
+	</update>
+	
+	<update id="updateViewNum2">
+    	UPDATE FEEDBACK
+		SET VIEW_NUM=#{view_num}
+		WHERE
+		ID=#{id}
+	</update>
+
+
+
+</mapper>

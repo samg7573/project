@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+        <setting name="jdbcTypeForNull" value="VARCHAR" />
+    </settings>
+
+	<typeAliases>
+		<typeAlias alias="User"
+			type="egovframework.sample.service.UserVO" />
+		<typeAlias alias="Data"
+			type="egovframework.sample.service.DataVO" />
+		<typeAlias alias="board"
+			type="egovframework.sample.service.BoardVO" />
+		<typeAlias alias="commentb"
+			type="egovframework.sample.service.CommentbVO" />
+		<typeAlias alias="Categoryb"
+			type="egovframework.sample.service.CategorybVO" />
+		<typeAlias alias="Part"
+			type="egovframework.sample.service.PartVO" />
+		
+		<typeAlias alias="category_e"
+			type="egovframework.sample.service.Category_EVO" />
+		<typeAlias alias="exercise"
+			type="egovframework.sample.service.ExerciseVO" />
+		<typeAlias alias="purpose"
+			type="egovframework.sample.service.PurposeVO" />
+		<typeAlias alias="Feedback"
+			type="egovframework.sample.service.FeedbackVO" />
+		<typeAlias alias="commentf"
+			type="egovframework.sample.service.CommentfVO" />	
+
+	</typeAliases>
+</configuration>
+

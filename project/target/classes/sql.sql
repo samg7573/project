@@ -1,0 +1,286 @@
+/**********************************/
+/* Table Name: 회원 */
+/**********************************/
+--drop table "USER";
+alter table board add (VIEW_NUM NUMBER null);
+alter table exercise add (INQ_CNT NUMBER default 0);
+number default
+select * from "USER";
+delete table exercise 
+alter table exercise drop column INQ_CNT;
+--INSERT INTO "USER" (ID, USER_NM, NICK_NM, USER_ID, USER_PSWD, SEXDSTN, EML, MBR_GRD)
+--VALUES ('U-00001', '테스터', 'tester', 'test123', '1111', '여성', 'test123.com', '일반');
+
+ALTER TABLE "USER" MODIFY USER_PSWD VARCHAR2(64);
+ALTER TABLE BOARD
+MODIFY RCMDIN_CNT INT;
+select * from feedback;
+/*게시글 삭제시*/
+ALTER TABLE COMMENT_B
+DROP CONSTRAINT IDX_COMMENT_B_FK0;
+
+ALTER TABLE COMMENT_B
+ADD CONSTRAINT IDX_COMMENT_B_FK0
+FOREIGN KEY (BOARD)
+REFERENCES BOARD (ID)
+ON DELETE CASCADE;
+
+CREATE TABLE "USER"(
+		ID VARCHAR2(20) NOT NULL primary key,
+		USER_NM VARCHAR2(20) NOT NULL,
+		NICK_NM VARCHAR2(20) NOT NULL,
+		USER_ID VARCHAR2(20) NOT NULL,
+		USER_PSWD VARCHAR2(20) NOT NULL,
+		SEXDSTN VARCHAR2(8) NOT NULL,
+		EML VARCHAR2(40) NOT NULL,
+		MBR_GRD VARCHAR2(40) NOT NULL
+);
+select * from data;
+select * from "USER";
+
+ALTER TABLE "USER"
+MODIFY (USER_PSWD VARCHAR2(64));
+/**********************************/
+/* Table Name: idgen */
+/**********************************/
+create table ids (
+table_name varchar2(20) primary key,
+next_id number(30) not null
+);
+/**소문자 user**/
+
+select * from CATEGORY_B;
+insert into ids values('comment_b',2);
+/**********************************/
+/* Table Name: 글 카테고리 */
+/**********************************/
+CREATE TABLE CATEGORY_B(
+		ID VARCHAR2(20) NOT NULL primary key,
+		CLSF_NM VARCHAR2(20) NOT NULL
+);
+
+
+/**********************************/
+/* Table Name: 자유게시판 */
+/**********************************/
+
+INSERT INTO BOARD(ID,REG_USER,MDFCN_USER,CTGRY_B,TTL,BBS_CN,REG_DT,MDFCN_DT, RCMDIN_CNT)
+VALUES ('SAMPLE-001','U-00001','U-00001','CTGRY_001','제목01','내용01',sysdate,sysdate,0);
+
+delete from BOARD;
+INSERT INTO CATEGORY_B (ID, CLSF_NM) VALUES ('CTGRY_001', '운동게시판');
+INSERT INTO CATEGORY_B (ID, CLSF_NM) VALUES ('CTGRY_002', '식단게시판');
+INSERT INTO CATEGORY_B (ID, CLSF_NM) VALUES ('CTGRY_003', '자유게시판');
+INSERT INTO CATEGORY_B (ID, CLSF_NM) VALUES ('CTGRY_004', '기타게시판');
+
+CREATE TABLE BOARD(
+		ID VARCHAR2(20) NOT NULL primary key,
+		REG_USER VARCHAR2(20) NOT NULL,
+		MDFCN_USER VARCHAR2(20) NOT NULL,
+		CTGRY_B VARCHAR2(20) NOT NULL,
+		TTL VARCHAR2(256) NOT NULL,
+		BBS_CN CLOB NOT NULL,
+		REG_DT DATE,
+		MDFCN_DT DATE,
+		RCMDIN_CNT VARCHAR2(20)
+);
+
+
+/**********************************/
+/* Table Name: 운동 카테고리 */
+/**********************************/
+
+drop table CATEGORY_E;
+CREATE TABLE CATEGORY_E(
+		E_CTGRY_ID VARCHAR2(20) NOT NULL primary key,
+		CLSF_NM VARCHAR2(20) NOT NULL
+);
+
+/**********************************/
+/* Table Name: 운동루틴게시판 */
+/**********************************/
+drop table exercise;
+CREATE TABLE EXERCISE(
+    EXCR_ID VARCHAR2(20) NOT NULL primary key,
+    TTL VARCHAR2(256) NOT NULL,
+    REG_USER VARCHAR2(20) NOT NULL,
+    MDFCN_USER VARCHAR2(20) NOT NULL,
+    CTGRY_E VARCHAR2(20) NOT NULL,
+    WGHT NUMBER(10, 2) NOT NULL,
+    CAL NUMBER(10, 2) NOT NULL,
+    EXCR_TM VARCHAR2(20) NOT NULL,
+    PRVT NUMBER(1) NOT NULL,
+    REG_DT DATE,
+    MDFCN_DT DATE
+);
+
+/**********************************/
+/* Table Name: 피드백게시판 */
+/**********************************/
+drop table feedback;
+CREATE TABLE FEEDBACK(
+		ID VARCHAR2(20) NOT NULL primary key,
+		TTL VARCHAR2(256) NOT NULL,
+		REG_USER VARCHAR2(20) NOT NULL,
+		MDFCN_USER VARCHAR2(20),
+		BBS_CN CLOB NOT NULL,
+		PHOTO CLOB,
+		RCMDTN_CNT VARCHAR2(20) NOT NULL,
+		REG_DT DATE,
+		MDFCN_DT DATE
+);
+
+ALTER TABLE COMMENT_F
+ADD CONSTRAINT IDX_COMMENT_F_FK0
+FOREIGN KEY (FEEDBACK)
+REFERENCES FEEDBACK (ID)
+ON DELETE CASCADE;
+
+alter table feedback add (VIEW_NUM NUMBER null);
+alter table feedback modify MDFCN_USER VARCHAR2(20) null;
+alter table feedback modify RCMDTN_CNT VARCHAR2(20) null;
+alter table feedback drop column PHOTO;
+alter table feedback drop column PHOTO;
+alter table feedback add (photo clob null);
+SELECT column_name, data_type, nullable
+FROM user_tab_columns
+WHERE table_name = 'FEEDBACK';
+/**********************************/
+/* Table Name: 자유게시판 댓글 */
+/**********************************/
+CREATE TABLE COMMENT_B(
+		ID VARCHAR2(20) NOT NULL primary key,
+		REG_USER VARCHAR2(20) NOT NULL,
+		MDFCN_USER VARCHAR2(20),
+		BOARD VARCHAR2(20) NOT NULL,
+		CMNT CLOB NOT NULL,
+		REG_DT DATE,
+		MDFCN_DT DATE
+);
+
+
+/**********************************/
+/* Table Name: 피드백 댓글 */
+/**********************************/
+drop table comment_f;
+CREATE TABLE COMMENT_F(
+		ID VARCHAR2(20) NOT NULL primary key,
+		CMNT CLOB NOT NULL,
+		REG_DT DATE,
+		MDFCN_DT DATE,
+		FEEDBACK VARCHAR2(20) NOT NULL,
+		REG_USER VARCHAR2(20) NOT NULL,
+		MDFCN_USER VARCHAR2(20)
+);
+
+/**********************************/
+/* Table Name: 목표설정 */
+/**********************************/
+CREATE TABLE PURPOSE(
+		PRPS_ID VARCHAR2(20) NOT NULL primary key,
+		REG_USER VARCHAR2(20) NOT NULL,
+		WK NUMBER NOT NULL,
+		ALLCAL FLOAT NOT NULL
+);
+alter table purpose add (REG_DT DATE null);
+select * from PURPOSE;
+alter table PURPOSE modify WK NUMBER null;
+
+drop table purpose;
+CREATE TABLE DATA (
+    id VARCHAR2(20) PRIMARY KEY,
+    part VARCHAR2(40) NOT NULL,
+    youtuber VARCHAR2(40),
+    link VARCHAR(255) NOT NULL,
+    framelink VARCHAR(255)
+
+);
+DELETE FROM DATA
+WHERE ID LIKE '%6';
+/**********************************/
+/* Table Name: 운동 파트 */
+/**********************************/
+
+drop table part;
+CREATE TABLE PART(
+		ID VARCHAR2(20) NOT NULL primary key,
+		CLSF_NM VARCHAR2(256) NOT NULL
+);
+desc data;
+alter table DATA modify part VARCHAR2(40);
+select * from data;
+DELETE FROM data
+WHERE ID LIKE '%9';
+INSERT INTO PART (ID, CLSF_NM) VALUES ('PART_001', '스트레칭');
+INSERT INTO PART (ID, CLSF_NM) VALUES ('PART_002', '맨몸운동상체');
+INSERT INTO PART (ID, CLSF_NM) VALUES ('PART_003', '맨몸운동하체');
+INSERT INTO PART (ID, CLSF_NM) VALUES ('PART_004', '머신바벨운동상체');
+INSERT INTO PART (ID, CLSF_NM) VALUES ('PART_005', '머신바벨운동하체');
+
+delete from DATA WHERE ID LIKE 'U%';
+INSERT INTO DATA (ID, PART, YOUTUBER, LINK, FRAMELINK)
+VALUES ('D-00001', '스트레칭', '심으뜸','https://www.youtube.com/watch?v=50WCSpZtdmA','<iframe src="https://www.youtube.com/embed/50WCSpZtdmA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>');
+INSERT INTO DATA (ID, PART, YOUTUBER, LINK, FRAMELINK)
+VALUES ('D-00001', '머신바벨운동상체', '핏블리','https://youtu.be/MVEHN4MIOA4','<iframe src="https://www.youtube.com/embed/MVEHN4MIOA4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>');
+
+-- 첫 번째 외래 키 제약 조건 제거
+ALTER TABLE BOARD DROP CONSTRAINT IDX_BOARD_FK0;
+
+-- 두 번째 외래 키 제약 조건 제거
+ALTER TABLE BOARD DROP CONSTRAINT IDX_BOARD_FK1;
+ALTER TABLE EXERCISE DROP CONSTRAINT IDX_EXERCISE_FK1;
+ALTER TABLE EXERCISE DROP CONSTRAINT IDX_EXERCISE_FK2;
+
+ALTER TABLE FEEDBACK DROP CONSTRAINT IDX_FEEDBACK_FK0;
+ALTER TABLE FEEDBACK DROP CONSTRAINT IDX_FEEDBACK_FK1;
+ALTER TABLE COMMENT_B DROP CONSTRAINT IDX_COMMENT_B_FK1;
+ALTER TABLE COMMENT_B DROP CONSTRAINT IDX_COMMENT_B_FK2;
+ALTER TABLE COMMENT_F DROP CONSTRAINT IDX_COMMENT_F_FK0;
+
+ALTER TABLE COMMENT_F ADD CONSTRAINT IDX_COMMENT_F_FK0 FOREIGN KEY (FEEDBACK) REFERENCES FEEDBACK (ID);
+ALTER TABLE COMMENT_F
+DROP CONSTRAINT IDX_COMMENT_F_FK0;
+ALTER TABLE COMMENT_F DROP CONSTRAINT IDX_COMMENT_F_FK1;
+ALTER TABLE COMMENT_F DROP CONSTRAINT IDX_COMMENT_F_FK2;
+ALTER TABLE PURPOSE DROP CONSTRAINT IDX_PURPOSE_FK0;
+
+
+ALTER TABLE CATEGORY_E ADD CONSTRAINT IDX_CATEGORY_E_PK FOREIGN KEY (E_CTGRY_ID);
+
+ALTER TABLE BOARD ADD CONSTRAINT IDX_BOARD_FK0 FOREIGN KEY (REG_USER) REFERENCES "USER" (ID);
+ALTER TABLE BOARD ADD CONSTRAINT IDX_BOARD_FK1 FOREIGN KEY (MDFCN_USER) REFERENCES "USER" (ID);
+ALTER TABLE BOARD ADD CONSTRAINT IDX_BOARD_FK2 FOREIGN KEY (CTGRY_B) REFERENCES CATEGORY_B (ID);
+
+ALTER TABLE EXERCISE ADD CONSTRAINT IDX_EXERCISE_PK PRIMARY KEY (ID);
+ALTER TABLE EXERCISE ADD CONSTRAINT IDX_EXERCISE_FK0 FOREIGN KEY (CTGRY_E) REFERENCES CATEGORY_E (E_CTGRY_ID);
+ALTER TABLE EXERCISE ADD CONSTRAINT IDX_EXERCISE_FK1 FOREIGN KEY (REG_USER) REFERENCES "USER" (ID);
+ALTER TABLE EXERCISE ADD CONSTRAINT IDX_EXERCISE_FK2 FOREIGN KEY (MDFCN_USER) REFERENCES "USER" (ID);
+
+
+ALTER TABLE FEEDBACK ADD CONSTRAINT IDX_FEEDBACK_FK0 FOREIGN KEY (REG_USER) REFERENCES "USER" (ID);
+ALTER TABLE FEEDBACK ADD CONSTRAINT IDX_FEEDBACK_FK1 FOREIGN KEY (MDFCN_USER) REFERENCES "USER" (ID);
+
+ALTER TABLE COMMENT_B ADD CONSTRAINT IDX_COMMENT_B_FK0 FOREIGN KEY (BOARD) REFERENCES BOARD (ID);
+ALTER TABLE COMMENT_B ADD CONSTRAINT IDX_COMMENT_B_FK1 FOREIGN KEY (REG_USER) REFERENCES "USER" (ID);
+ALTER TABLE COMMENT_B ADD CONSTRAINT IDX_COMMENT_B_FK2 FOREIGN KEY (MDFCN_USER) REFERENCES "USER" (ID);
+
+ALTER TABLE COMMENT_F ADD CONSTRAINT IDX_COMMENT_F_FK0 FOREIGN KEY (FEEDBACK) REFERENCES FEEDBACK (ID);
+ALTER TABLE COMMENT_F ADD CONSTRAINT IDX_COMMENT_F_FK1 FOREIGN KEY (REG_USER) REFERENCES "USER" (ID);
+ALTER TABLE COMMENT_F ADD CONSTRAINT IDX_COMMENT_F_FK2 FOREIGN KEY (MDFCN_USER) REFERENCES "USER" (ID);
+
+ALTER TABLE PURPOSE ADD CONSTRAINT IDX_PURPOSE_PK PRIMARY KEY (PRPS_ID);
+ALTER TABLE PURPOSE ADD CONSTRAINT IDX_PURPOSE_FK0 FOREIGN KEY (REG_USER) REFERENCES "USER" (USER_ID);
+
+
+
+
+
+
+
+
+
+
+
+
+
+

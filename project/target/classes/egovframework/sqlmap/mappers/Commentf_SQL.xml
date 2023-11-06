@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.sample.service.impl.CommentfMapper">
+
+<resultMap id="commentfResult" type="commentf" >
+		<result property="id" column="ID"/>
+		<result property="reg_user" column="REG_USER"/>
+		<result property="mdfcn_user" column="MDFCN_USER"/>
+		<result property="bbs_fk" column="FEEDBACK"/>
+		<result property="cmnt" column="CMNT"/>
+		<result property="reg_dt" column="REG_DT"/>
+		<result property="mdfcn_dt" column="MDFCN_DT"/>
+	</resultMap>
+	
+	<insert id="insertCommentf">
+		INSERT INTO COMMENT_F
+		(ID,REG_USER,MDFCN_USER,FEEDBACK,CMNT,REG_DT,MDFCN_DT)
+		VALUES
+		(#{id},#{reg_user},#{mdfcn_user},#{bbs_fk},#{cmnt},SYSDATE,SYSDATE)
+	</insert>
+	
+	
+	<update id="updateCommentf">
+		UPDATE COMMENT_F
+		SET CMNT=#{cmnt},
+			MDFCN_DT=SYSDATE
+		WHERE ID=#{id}
+	</update>
+	
+	<delete id="deleteCommentf">
+		DELETE FROM COMMENT_F WHERE ID=#{id}
+	</delete>
+	
+	<select id="selectCommentfList" resultMap="commentfResult">
+		SELECT ID,REG_USER,CMNT,REG_DT
+		FROM COMMENT_F WHERE FEEDBACK=#{feedback.id} AND FEEDBACK=#{bbs_fk}
+	</select>
+	
+
+</mapper>

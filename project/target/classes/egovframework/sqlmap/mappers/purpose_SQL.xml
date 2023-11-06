@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="purposeDAO">
+	<resultMap type="purpose" id="purposeResult">
+		<result property="prps_id" column="PRPS_ID" />
+		<result property="wk" column="WK" />
+		<result property="allcal" column="ALLCAL" />
+		<result property="reg_dt" column="REG_DT" />
+		<result property="prps_y" column="PRPS_Y" />
+		<result property="prps_m" column="PRPS_M" />
+		<result property="mnth_wk" column="MNTH_WK" />
+
+		<association property="reg_user" column="USER_NM"
+			javaType="User">
+			<id property="id" column="ID" />
+			<result property="user_nm" column="USER_NM" />
+			<result property="nick_nm" column="NICK_NM" />
+			<result property="user_id" column="USER_ID" />
+			<result property="user_pswd" column="USER_PSWD" />
+			<result property="sexdstn" column="SEXDSTN" />
+			<result property="eml" column="EML" />
+			<result property="mbr_grd" column="MBR_GRD" />
+		</association>
+	</resultMap>
+
+	<insert id="insertpurpose" parameterType="purpose">
+		INSERT INTO
+		PURPOSE(PRPS_ID,WK,ALLCAL,REG_DT,PRPS_Y,PRPS_M,MNTH_WK,REG_USER)
+		VALUES(
+		#{prps_id},
+		#{wk},
+		#{allcal},
+		#{reg_dt},
+		#{prps_y},
+		#{prps_m},
+		#{mnth_wk},
+		#{reg_user.id})
+	</insert>
+
+	<select id="selectYM" resultMap="purposeResult"
+		parameterType="purpose">
+		SELECT
+		p.PRPS_ID, p.WK, p.ALLCAL,
+		p.PRPS_Y,p.PRPS_M,p.MNTH_WK,p.reg_dt,
+		us.NICK_NM
+		FROM
+		PURPOSE p
+		LEFT OUTER
+		JOIN "USER" us ON p.REG_USER = us.ID
+		WHERE
+		p.REG_USER =#{reg_user.id}
+		AND
+		p.PRPS_Y=#{prps_y} AND
+		p.PRPS_M=#{prps_m}
+	</select>
+
+	<select id="selectYMD" resultMap="purposeResult"
+		parameterType="purpose">
+		SELECT
+		p.PRPS_ID, p.WK, p.ALLCAL,
+		p.PRPS_Y,p.PRPS_M,p.MNTH_WK,p.reg_dt,
+		us.NICK_NM
+		FROM
+		PURPOSE p
+		LEFT OUTER
+		JOIN "USER" us ON p.REG_USER = us.ID
+		WHERE
+		p.REG_USER =#{reg_user.id}
+		AND
+		p.PRPS_Y=#{prps_y} AND
+		p.PRPS_M=#{prps_m} AND
+		p.MNTH_WK=#{mnth_wk}
+	</select>
+
+	<update id="updatepurpose">
+<![CDATA[
+		UPDATE PURPOSE
+		SET
+		WK=#{wk},
+		ALLCAL=#{allcal}
+		WHERE
+		PRPS_ID=#{prps_id}
+	]]>
+	</update>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.sample.service.impl.CommentbMapper">
+
+	<resultMap id="commentbResult" type="commentb" >
+		<result property="id" column="ID"/>
+		<result property="reg_user" column="REG_USER"/>
+		<result property="mdfcn_user" column="MDFCN_USER"/>
+		<result property="bbs_fk" column="BOARD"/>
+		<result property="cmnt" column="CMNT"/>
+		<result property="reg_dt" column="REG_DT"/>
+		<result property="mdfcn_dt" column="MDFCN_DT"/>
+	</resultMap>
+	
+	<insert id="insertCommentb">
+		INSERT INTO COMMENT_B
+		(ID,REG_USER,MDFCN_USER,BOARD,CMNT,REG_DT,MDFCN_DT)
+		VALUES
+		(#{id},#{reg_user},#{mdfcn_user},#{bbs_fk},#{cmnt},SYSDATE,SYSDATE)
+	</insert>
+	
+	
+	<update id="updateCommentb">
+		UPDATE COMMENT_B
+		SET CMNT=#{cmnt},
+			MDFCN_DT=SYSDATE
+		WHERE ID=#{id}
+	</update>
+	
+	<delete id="deleteCommentb">
+		DELETE FROM COMMENT_B WHERE ID=#{id}
+	</delete>
+	
+	<select id="selectCommentbList" resultMap="commentbResult">
+		SELECT ID,REG_USER,CMNT,REG_DT
+		FROM COMMENT_B WHERE BOARD=#{board.id} AND BOARD=#{bbs_fk}
+	</select>
+	
+
+</mapper>

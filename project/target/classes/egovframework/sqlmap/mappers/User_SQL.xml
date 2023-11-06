@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="egovframework.sample.service.impl.UserMapper">
+
+	<resultMap type="user" id="userResult">
+		<id property="id" column="ID" />
+		<result property="user_nm" column="USER_NM"/>
+		<result property="nick_nm" column="NICK_NM"/>
+		<result property="user_id" column="USER_ID"/>
+		<result property="user_pswd" column="USER_PSWD"/>
+		<result property="sexdstn" column="SEXDSTN"/>
+		<result property="eml" column="EML"/>
+		<result property="mbr_grd" column="MBR_GRD"/>
+	</resultMap>
+
+	<insert id="insertUser">
+		INSERT INTO "USER"(ID,USER_NM,NICK_NM,USER_ID,USER_PSWD,SEXDSTN,EML,MBR_GRD)
+		VALUES (
+		#{id},
+		#{user_nm},
+		#{nick_nm},
+		#{user_id},
+		#{user_pswd},
+		#{sexdstn},
+		#{eml},
+		#{mbr_grd}
+		)
+	</insert>
+	
+	<update id="updateUser">
+		UPDATE "USER"
+		SET USER_NM=#{user_nm},
+			NICK_NM=#{nick_nm},
+			USER_ID=#{user_id},
+			
+			USER_PSWD=#{user_pswd},
+			EML=#{eml}	
+		WHERE ID=#{id}
+	</update>
+
+	<update id="updateUserInfo">
+		UPDATE "USER"
+		SET USER_NM=#{user_nm},
+			NICK_NM=#{nick_nm},
+			USER_ID=#{user_id},
+			EML=#{eml},
+			SEXDSTN=#{sexdstn}
+		WHERE ID=#{id}
+	</update>
+
+	
+	<delete id="deleteUser">
+		DELETE FROM "USER"
+		WHERE ID=#{id}
+	</delete>
+	
+	<select id="selectUser" resultMap="userResult">
+	<![CDATA[
+		SELECT ID,USER_NM,NICK_NM,USER_ID,USER_PSWD,SEXDSTN,EML,MBR_GRD
+		FROM "USER"
+		WHERE ID=#{id, jdbcType=VARCHAR}
+		]]>
+	</select>
+	
+	<select id="getUserByUserId" resultMap="userResult">
+		<![CDATA[
+		SELECT ID,USER_NM,NICK_NM,USER_ID,USER_PSWD,SEXDSTN,EML,MBR_GRD 
+		FROM "USER" 
+		WHERE USER_ID=#{user_id, jdbcType=VARCHAR}
+		]]>
+	</select>
+	
+	<select id="getUserById" resultMap="userResult">
+		<![CDATA[
+		SELECT ID,USER_NM,NICK_NM,USER_ID,USER_PSWD,SEXDSTN,EML,MBR_GRD 
+		FROM "USER" 
+		WHERE ID=#{id}
+		]]>
+	</select>
+
+	
+	<select id="selectUserList" resultMap="userResult">
+		SELECT ID,USER_NM,NICK_NM,USER_ID,USER_PSWD,SEXDSTN,EML,MBR_GRD
+		FROM "USER"
+		ORDER BY ID DESC
+	</select>
+	
+	
+	<select id="loginUser" resultMap="userResult">
+    	SELECT ID, USER_NM, NICK_NM, USER_ID, USER_PSWD, SEXDSTN, EML, MBR_GRD
+    	FROM "USER"
+    	WHERE USER_ID = #{user_id, jdbcType=VARCHAR}
+	    
+	</select>
+	
+	<select id="findUserIdByUsername" resultType="String">
+    	SELECT USER_ID 
+    	FROM "USER" 
+    	WHERE USER_NM = #{user_nm, jdbcType=VARCHAR}
+    	
+	</select>
+	
+	<select id="findPwdByUserId" resultType="String">
+    	SELECT USER_PSWD 
+    	FROM "USER" 
+    	WHERE USER_NM = #{user_nm, jdbcType=VARCHAR} AND 
+    	USER_ID = #{user_id, jdbcType=VARCHAR} AND 
+    	EML = #{eml, jdbcType=VARCHAR}
+    	
+	</select>
+	
+	<select id="checkDuplicateUserId" resultType="int">
+        SELECT COUNT(*) 
+        FROM "USER" 
+        WHERE USER_ID = #{user_id, jdbcType=VARCHAR}
+    </select>
+  
+</mapper>

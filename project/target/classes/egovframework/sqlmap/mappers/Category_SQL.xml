@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.sample.service.impl.CategorybMapper">
+	<resultMap id="categorybResult" type="Categoryb">
+		<result property="id" column="ID" />
+		<result property="clsf_nm" column="CLSF_NM" />
+	</resultMap>
+
+	<select id="getIdByName" resultMap="categorybResult">
+
+		SELECT ID,CLSF_NM FROM CATEGORY_B WHERE ID =#{id}
+	</select>
+</mapper>
